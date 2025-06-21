@@ -5,14 +5,28 @@ const bcrypt = require('bcrypt')
 
 class UserService {
     constructor(){
-        this.UserRepo= new UserRepo()
+        this.userRepo= new UserRepo()
     }
     async create(data){
         try {
-            const user = await this.UserRepo.create(data)
+            const user = await this.userRepo.create(data)
             return user
         } catch (error) {
             console.log('something went wrong in service layer')
+            throw error
+        }
+    }
+    async signIn(email,passsword){
+        try {
+            const user = await this.userRepo.getByEmail(email)
+            const passswordMatch =  this.checkPassword(passsword,user.password)
+            if(!passswordMatch){
+                throw {error:"Incorrect Password"}
+            }
+            const newJWT = this.createToken({email:user.email,id:user.id})
+            return newJWT
+        } catch (error) {
+            console.log('something went wrong with sign in')
             throw error
         }
     }
@@ -34,9 +48,9 @@ class UserService {
             throw error
         }
     }
-     async checkPassword(userPlainPassword,encryptedPassword){
+      checkPassword(userPlainPassword,encryptedPassword){
         try {
-            return await  bcrypt.compareSync(userPlainPassword,encryptedPassword)
+            return   bcrypt.compareSync(userPlainPassword,encryptedPassword)
         } catch (error) {
              console.log('something went wrong in password verification')
             throw error
