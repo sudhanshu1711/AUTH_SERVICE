@@ -27,7 +27,7 @@ class UserRepo {
     async getById(id){
       try {
         const user = await User.findByPk(id,{
-          attributes:["email","id"]
+          attributes:["email","id"] 
         })
          return user
       } catch (error) {
