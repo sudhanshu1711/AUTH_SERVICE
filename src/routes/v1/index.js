@@ -6,5 +6,6 @@ const router = express.Router()
 
 router.post('/signup',AuthMiddlewares.validateUserAuth,UserController.create)
 router.post('/signin',AuthMiddlewares.validateUserAuth,UserController.signIn)
+router.get('/isAuthenticated',UserController.isAuthenticated)
 module.exports = router
 
