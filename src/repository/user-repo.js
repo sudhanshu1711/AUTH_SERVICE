@@ -24,5 +24,16 @@ class UserRepo {
         throw error
       }
     }
+    async getById(id){
+      try {
+        const user = await User.findByPk(id,{
+          attributes:["email","id"]
+        })
+         return user
+      } catch (error) {
+
+        
+      }
+    }
     }
 module.exports = UserRepo
