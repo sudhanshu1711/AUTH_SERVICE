@@ -16,11 +16,11 @@ const create = async(req,res)=>{
       })        
     } catch (error) {
         console.log(error)
-        return res.status(500).json({
+        return res.status(error.statusCode).json({
             success:false,
             data:{},
-            error:error,
-            message:"something went wrong"
+            error:error.explanation,
+            message:error.message
         })
     }
 }
@@ -63,4 +63,23 @@ const signIn = async(req,res)=>{
         })
   }
   }
-module.exports={create,signIn,isAuthenticated}
+const isAdmin = async(req,res)=>{
+  try {
+    const response = await userService.isAdmin(req.body.userId)
+     return res.status(200).json({
+      success:true,
+      data:response,
+      error:{},
+      message:"User is admin"
+     })
+
+  } catch (error) {
+     return res.status(500).json({
+            success:false,
+            data:{},
+            error:error,
+            message:"something went wrong"
+        })
+  }
+}
+module.exports={create,signIn,isAuthenticated,isAdmin}

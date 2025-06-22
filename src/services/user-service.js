@@ -12,6 +12,9 @@ class UserService {
             const user = await this.userRepo.create(data)
             return user
         } catch (error) {
+            if(error.name='SequelizeValidationError'){
+                throw error
+            }
             console.log('something went wrong in service layer')
             throw error
         }
@@ -69,6 +72,14 @@ class UserService {
             console.log('something went wrong in auth verification')
             throw error
         }
+    }
+   async isAdmin(userId){
+      try {
+        return await this.userRepo.isAdmin(userId)
+      } catch (error) {
+          console.log('something went wrong while checking the role')
+            throw error 
+      }
     }
 }
 module.exports = UserService
