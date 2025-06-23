@@ -10,7 +10,7 @@ class ValidationError extends AppError {
         })
         super(
         name,
-        'Not able to validate data sent',
+        'Not able to validate data sent', 
         explanation,
         StatusCodes.BAD_REQUEST
         )

@@ -16,12 +16,13 @@ const create = async(req,res)=>{
       })        
     } catch (error) {
         console.log(error)
-        return res.status(error.statusCode).json({
-            success:false,
-            data:{},
-            error:error.explanation,
-            message:error.message
-        })
+        console.log('Caught error in controller:', error);
+        return res.status(error.statusCode || 500).json({
+            success: false,
+            data: {},
+            error: error.explanation || error.message || "Internal Server Error",
+            message: error.message || "Something went wrong"
+        });
     }
 }
 const signIn = async(req,res)=>{
@@ -35,11 +36,11 @@ const signIn = async(req,res)=>{
       })    
   } catch (error) {
     console.log(error)
-        return res.status(500).json({
+        return res.status(error.statusCode).json({
             success:false,
             data:{},
-            error:error,
-            message:"something went wrong"
+            error:error.explanation,
+            message:error.message
         })
   }
 }
